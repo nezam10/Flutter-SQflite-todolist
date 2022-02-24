@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sqflite_todolist_app/screens/categories_screen.dart';
 import 'package:flutter_sqflite_todolist_app/screens/home_screen.dart';
+import 'package:flutter_sqflite_todolist_app/screens/login_screen.dart';
 
 class DrawerNavigaton extends StatefulWidget {
   const DrawerNavigaton({Key? key}) : super(key: key);
@@ -35,6 +36,11 @@ class _DrawerNavigatonState extends State<DrawerNavigaton> {
                     MaterialPageRoute(builder: (context) => HomeScreen()));
               },
             ),
+            Container(
+              height: 1,
+              width: MediaQuery.of(context).size.width,
+              color: Colors.grey,
+            ),
             ListTile(
               leading: Icon(Icons.view_list),
               title: Text('Categories'),
@@ -42,7 +48,25 @@ class _DrawerNavigatonState extends State<DrawerNavigaton> {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => CategoriesScreen()));
               },
-            )
+            ),
+            Container(
+              height: 1,
+              width: MediaQuery.of(context).size.width,
+              color: Colors.grey,
+            ),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text('Log Out'),
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => LoginScreen()));
+              },
+            ),
+            Container(
+              height: 1,
+              width: MediaQuery.of(context).size.width,
+              color: Colors.grey,
+            ),
           ],
         ),
       ),

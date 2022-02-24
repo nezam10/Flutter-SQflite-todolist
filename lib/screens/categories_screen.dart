@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sqflite_todolist_app/models/category.dart';
+import 'package:flutter_sqflite_todolist_app/repositories/database_connection.dart';
 import 'package:flutter_sqflite_todolist_app/screens/home_screen.dart';
+import 'package:flutter_sqflite_todolist_app/service/category_service.dart';
 
 class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({Key? key}) : super(key: key);
@@ -10,14 +12,16 @@ class CategoriesScreen extends StatefulWidget {
 }
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
-  var _categoryNameController = TextEditingController();
-  var _categoryDescriptionController = TextEditingController();
+  List<Map<String, dynamic>> _dataList = [];
 
-  var _category = Category();
-  var _categoryService = CategoriesScreen();
-
-  _showFormDialog(BuildContext context) {
-    showDialog(
+  _addItems(int? id, String? title, String? description) {
+    TextEditingController titleController = TextEditingController();
+    TextEditingController desController = TextEditingController();
+    if (id != null) {
+      titleController.text = title!;
+      desController.text = description!;
+    }
+    return showDialog(
         context: context,
         barrierDismissible: true,
         builder: (param) {
@@ -28,39 +32,64 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 onPressed: () => Navigator.pop(context),
                 child: Text('Cancel'),
               ),
-              FlatButton(
-                color: Colors.blue,
-                onPressed: () {
-                  _category.name = _categoryNameController.text;
-                  _category.descriptio = _categoryDescriptionController.text;
-                },
-                child: Text('Save'),
-              ),
             ],
             title: Text('Categories Form'),
             content: SingleChildScrollView(
               child: Column(
                 children: [
                   TextField(
-                    controller: _categoryNameController,
+                    controller: titleController,
                     decoration: InputDecoration(
-                      hintText: 'Write a category',
-                      labelText: 'Category',
+                      hintText: 'Write a Title',
+                      labelText: 'Title',
                     ),
                   ),
                   TextField(
-                    controller: _categoryDescriptionController,
+                    controller: desController,
                     maxLines: 2,
                     decoration: InputDecoration(
                       hintText: 'Write a description',
                       labelText: 'Description',
                     ),
-                  )
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      var title = titleController.text.toString();
+                      var des = desController.text.toString();
+                      if (id == null) {
+                        SQLHelper.insertData(title, des).then((value) => {
+                              if (value != -1)
+                                {
+                                  print("Data inserted Successfully"),
+                                }
+                              else
+                                {
+                                  print("failed to insert"),
+                                }
+                            });
+                      }
+                    },
+                    child: Text("add"),
+                  ),
                 ],
               ),
             ),
           );
         });
+  }
+
+  getAllData() async {
+    var List = await SQLHelper.getAllData();
+    setState(() {
+      _dataList = List;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getAllData();
   }
 
   @override
@@ -69,8 +98,11 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       appBar: AppBar(
         title: const Text('Categories'),
         leading: RaisedButton(
-          onPressed: () => Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => HomeScreen())),
+          onPressed: () => {
+            getAllData(),
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => HomeScreen())),
+          },
           elevation: 0.0,
           child: Icon(
             Icons.arrow_back,
@@ -84,7 +116,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _showFormDialog(context);
+          _addItems(null, null, null);
         },
         child: Icon(Icons.add),
       ),
