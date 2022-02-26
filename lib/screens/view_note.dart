@@ -41,7 +41,7 @@ class ViewNoteScreen extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: GestureDetector(
                 child: Card(
-                  elevation: 5,
+                  elevation: 4,
                   child: Container(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height / 1.25,
