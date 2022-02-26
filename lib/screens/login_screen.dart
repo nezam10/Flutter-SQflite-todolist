@@ -41,16 +41,30 @@ class _LoginScreenState extends State<LoginScreen> {
     _dataList;
   }
 
-  void checkLogin(var checkEmail, var checkPassword) {
-    SQLHelper.checkLogin(checkEmail, checkPassword).then((value) => () {
-          if (value != null) {
-            saveData();
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => HomeScreen()));
-          } else {
-            toastMessage("invalid email & password");
-          }
-        });
+   checkLogin(var checkEmail, var checkPassword) async{
+
+    String result = await SQLHelper.checkLogin(checkEmail, checkPassword);
+    if(result.isNotEmpty){
+      saveData();
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => HomeScreen()));
+    }else{
+      toastMessage("invalid email & password");
+    }
+
+    // var res = SQLHelper.checkLogin(checkEmail, checkPassword).then((value) => () {
+    //   print("login $value");
+    //       if (value != null) {
+    //         toastMessage("Success");
+    //         saveData();
+    //         Navigator.push(
+    //             context, MaterialPageRoute(builder: (context) => HomeScreen()));
+    //       } else {
+    //         toastMessage("invalid email & password");
+    //       }
+    //     });
+    //
+    // print("login $res");
 
     // var userEmail = checkEmail;
     // var password = checkPassword;
