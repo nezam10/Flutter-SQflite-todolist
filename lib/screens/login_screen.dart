@@ -41,14 +41,13 @@ class _LoginScreenState extends State<LoginScreen> {
     _dataList;
   }
 
-   checkLogin(var checkEmail, var checkPassword) async{
-
+  checkLogin(var checkEmail, var checkPassword) async {
     String result = await SQLHelper.checkLogin(checkEmail, checkPassword);
-    if(result.isNotEmpty){
+    if (result.isNotEmpty) {
       saveData();
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => HomeScreen()));
-    }else{
+    } else {
       toastMessage("invalid email & password");
     }
 

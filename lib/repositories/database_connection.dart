@@ -54,15 +54,16 @@ class SQLHelper {
     return db.query("userdata", orderBy: "id");
   }
 
-  static Future checkLogin(String userName, String password) async {
+  static Future<dynamic> checkLogin(String userName, String password) async {
     final db = await SQLHelper.db();
+    print("login data $userName => $password");
     var res = await db.rawQuery(
-        "SELECT * FROM userdata WHERE email = ? $userName password = ? $password");
+        "SELECT * FROM userdata WHERE email = '$userName' and password = '$password'");
 
     if (res.length > 0) {
-      return res;
+      return res[0]["id"].toString();
     }
 
-    return null;
+    return "";
   }
 }
