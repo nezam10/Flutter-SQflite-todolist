@@ -15,6 +15,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<Map<String, dynamic>> _dataList = [];
+  String? userID;
 
   _addItems(int? id, String? title, String? description) {
     TextEditingController titleController = TextEditingController();
@@ -39,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   var title = titleController.text.toString();
                   var des = desController.text.toString();
                   if (id == null) {
-                    SQLHelper.insertData(title, des).then((value) => {
+                    SQLHelper.insertData(title, des,userID!).then((value) => {
                           if (value != -1)
                             {
                               print("Data inserted Successfully"),
@@ -91,10 +92,16 @@ class _HomeScreenState extends State<HomeScreen> {
   // }
 
   getAllData() async {
-    var List = await SQLHelper.getAllData();
-    setState(() {
-      _dataList = List;
-    });
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    userID = sharedPreferences.getString("userId");
+
+    if(userID != null){
+      var List = await SQLHelper.getAllData(userID!);
+      setState(() {
+        _dataList = List;
+      });
+    }
+
   }
 
   @override
@@ -102,6 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // TODO: implement initState
     super.initState();
     getAllData();
+
   }
 
   @override

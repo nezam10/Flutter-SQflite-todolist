@@ -32,21 +32,20 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-  void getSharedPreference() async {
-    sharedPreferences = await SharedPreferences.getInstance();
-  }
 
-  void saveUserData(String userid) {
-    final SharedPreferences sp = sharedPreferences!;
-    sp.setString("userId", userid);
+
+  void saveUserData(String userid) async{
+
+    sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences?.setString("userId", userid);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => HomeScreen()));
   }
 
   checkLogin(var checkEmail, var checkPassword) async {
     String result = await SQLHelper.checkLogin(checkEmail, checkPassword);
     if (result.isNotEmpty) {
       saveUserData(result);
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => HomeScreen()));
     } else {
       toastMessage("invalid email & password");
     }
@@ -98,9 +97,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   getAllData() async {
-    var List = await SQLHelper.getAllData();
+    //var List = await SQLHelper.getAllData();
     setState(() {
-      _dataList = List;
+      //_dataList = List;
     });
   }
 
@@ -108,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getAllData();
+    //getAllData();
   }
 
   bool _isVisible = false;

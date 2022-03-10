@@ -57,7 +57,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       var title = titleController.text.toString();
                       var des = desController.text.toString();
                       if (id == null) {
-                        SQLHelper.insertData(title, des).then((value) => {
+                        SQLHelper.insertData(title, des,"").then((value) => {
                               if (value != -1)
                                 {
                                   print("Data inserted Successfully"),
@@ -79,9 +79,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   }
 
   getAllData() async {
-    var List = await SQLHelper.getAllData();
+    //var List = await SQLHelper.getAllData();
     setState(() {
-      _dataList = List;
+      //_dataList = List;
     });
   }
 

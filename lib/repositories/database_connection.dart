@@ -11,15 +11,15 @@ class SQLHelper {
     });
   }
 
-  static Future<int> insertData(String title, String description) async {
+  static Future<int> insertData(String title, String description,String userId) async {
     final db = await SQLHelper.db();
-    var values = {"title": title, "description": description};
+    var values = {"title": title, "description": description,"userId":userId};
     return db.insert("note", values);
   }
 
-  static Future<List<Map<String, dynamic>>> getAllData() async {
+  static Future<List<Map<String, dynamic>>> getAllData(String userID) async {
     final db = await SQLHelper.db();
-    return db.query("note", orderBy: "id");
+    return db.query("note", orderBy: "id",where: "userId = ?",whereArgs: [userID]);
   }
 
   static Future<int> updateData(
