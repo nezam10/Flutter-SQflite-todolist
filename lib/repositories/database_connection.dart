@@ -5,7 +5,7 @@ class SQLHelper {
     return sqlite.openDatabase("info.db", version: 1,
         onCreate: (sqlite.Database database, int version) {
       database.execute(
-          "CREATE TABLE note (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, title TEXT, description TEXT)");
+          "CREATE TABLE note (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, title TEXT, description TEXT, userId TEXT)");
       database.execute(
           "CREATE TABLE userdata (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT, phone TEXT, email TEXT, password TEXT)");
     });

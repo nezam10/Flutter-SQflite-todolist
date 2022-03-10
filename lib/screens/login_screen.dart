@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_sqflite_todolist_app/models/model_class.dart';
 import 'package:flutter_sqflite_todolist_app/repositories/database_connection.dart';
@@ -30,6 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
     var List = await SQLHelper.getAllDataUser();
     setState(() {
       _dataList = List;
+      saveUserData;
     });
   }
 
@@ -37,14 +36,15 @@ class _LoginScreenState extends State<LoginScreen> {
     sharedPreferences = await SharedPreferences.getInstance();
   }
 
-  void saveData() {
-    _dataList;
+  void saveUserData(String userid) {
+    final SharedPreferences sp = sharedPreferences!;
+    sp.setString("userId", userid);
   }
 
   checkLogin(var checkEmail, var checkPassword) async {
     String result = await SQLHelper.checkLogin(checkEmail, checkPassword);
     if (result.isNotEmpty) {
-      saveData();
+      saveUserData(result);
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => HomeScreen()));
     } else {
